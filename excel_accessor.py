@@ -45,7 +45,7 @@ class ExcelAccessor:
                 rtn = value.strftime(self.datetime_format)
             else:
                 rtn = value
-        if rtn.find(',') >= 0:
+        if rtn.find(',') >= 0 or rtn.find("\n") >= 0 or rtn.find("\r\n") >= 0:
             rtn = '"' + rtn + '"'
 
         return rtn

@@ -2,7 +2,7 @@ import csv
 
 
 def create_query_file(query, export_file):
-    with open(export_file, mode='a', encoding='utf-8') as wf:
+    with open(export_file, mode='w', encoding='utf-8') as wf:
         wf.write(query)
 
         print(query)
@@ -14,6 +14,7 @@ class QueryMaker:
     table_name = ''
     delimiter = ','
     newline = '\n'
+    newline_cr = '\r\n'
     escape_char = '\''
     pre_parenthensis = '('
     suf_parenthensis = ')'
@@ -49,7 +50,7 @@ class QueryMaker:
                 for col in row:
                     if (col_cnt > 0):
                         q_body += self.delimiter + ' '
-                    q_body += self.escape_char + col + self.escape_char
+                    q_body += self.escape_char + self.lineChar(col) + self.escape_char
                     col_cnt += 1
                 cnt += 1
 
@@ -59,3 +60,6 @@ class QueryMaker:
 
         return query
 
+    def lineChar(self, col):
+        col = col.replace(self.newline_cr, "\\r\\n")
+        return col.replace(self.newline, "\\n")
