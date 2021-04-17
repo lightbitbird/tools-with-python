@@ -1,5 +1,5 @@
 import csv
-
+import chardet
 
 def create_query_file(query, export_file):
     with open(export_file, mode='w', encoding='utf-8') as wf:
@@ -24,8 +24,15 @@ class QueryMaker:
         self.csv_file = csv_file
 
     def insert_query(self, table_name):
-        with open(self.csv_file, encoding='utf-8') as f:
+        with open(self.csv_file, 'rb') as f:
+            encoding = chardet.detect(f.read()).get('encoding')
+            print(encoding)
+
+
+        # with open(self.csv_file, encoding='utf-8') as f:
+        with open(self.csv_file, encoding=encoding) as f:
             reader = csv.reader(f)
+
             query_prefix = 'INSERT INTO %s (%s) '
             q_values = self.newline + 'VALUES'
 
